@@ -19,5 +19,14 @@ def add_employee():
     employees.append(new_employee)
     return jsonify(new_employee), 201
 
+@app.route('/employees/<int:id>', methods=['DELETE'])
+def delete_employee(id):
+    global employees
+    for i, employee in enumerate(employees):
+        if employee['id'] == id:
+            del employees[i]
+            return 'Employé supprimé', 204
+    return 'Employé non trouvé', 404
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
