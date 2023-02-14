@@ -24,8 +24,7 @@ def delete_employee(id):
     global employees
     for i, employee in enumerate(employees):
         if employee['id'] == id:
-            employees.remove(employee)
-            #del employees[id]
+            del employees[id]
             return 'Employé supprimé', 204
     return 'Employé non trouvé', 404
 
