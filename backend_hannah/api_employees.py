@@ -44,7 +44,17 @@ def delete_employee(id):
         if employee['id'] == id:
             employees.remove(employee)
             return jsonify({'result': True})
-    return jsonify({'result': False, 'message': 'Employee not found'})
+    return jsonify({'result': False, 'message': 'Employée non trouvé'})
+
+@app.route('/api/v1/<int:id>', methods=['PUT'])
+def update_employee(id):
+    for employee in employees:
+        if employee['id'] == id:
+            employee['firstName'] = request.json['firstName']
+            employee['lastName'] = request.json['lastName']
+            employee['emailId'] = request.json['emailId']
+            return jsonify(employee)
+    return jsonify({'result': False, 'message': 'Employee non trouvé'})
 
 @app.route('/api/v1', methods=['GET'])
 def get_employees():
