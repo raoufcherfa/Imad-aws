@@ -11,7 +11,7 @@ def get_employees():
     ]
     return jsonify(employees)
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app.run(debug=True, port=8080)
 
 
