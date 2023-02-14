@@ -11,10 +11,8 @@ def get_employees():
     ]
     return jsonify(employees)
 
-if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    
 @app.route('/api/v1/employees', methods=['POST'])
-
 def add_employee():
     new_employee = request.json
     new_employee['id'] = len(employees) + 1
@@ -30,3 +28,6 @@ def delete_employee(id):
             del employees[i]
             return 'Employé supprimé', 204
     return 'Employé non trouvé', 404
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
