@@ -1,42 +1,44 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 employees = [
     {
         "id": 1, 
-        "prenom": "Hannah", 
-        "nom": "DELATTRE", 
-        "adresse": "1 Rue des Pistaches", 
-        "email": "hannah.delattre@gmail.com"
+        "firstName": "Hannah", 
+        "lastName": "DELATTRE", 
+        "emailId": "hannah.delattre@gmail.com"
     },
     {
         "id": 2, 
-        "prenom": "Leny", 
-        "nom": "ROUSSEAU", 
-        "adresse": "2 Rue des Tagadas", 
-        "email": "leny.rousseau@gmail.com"
+        "firstName": "Leny", 
+        "lastName": "ROUSSEAU", 
+        "emailId": "leny.rousseau@gmail.com"
     },
     {
         "id": 3, 
-        "prenom": "Pierre", 
-        "nom": "Durand", 
-        "adresse": "3 Rue des Champs", 
-        "email": "pierre.durand@hotmail.com"
-        },
+        "firstName": "Pierre", 
+        "lastName": "Durand", 
+        "emailId": "pierre.durand@hotmail.com"
+    },
     {
         "id": 4, 
-        "prenom": "Alice", 
-        "nom": "Dubois", 
-        "adresse": "1 Rue de la Paix", 
-        "email": "alice.dubois@gmail.com"}
+        "firstName": "Alice", 
+        "lastName": "Dubois", 
+        "emailId": "alice.dubois@gmail.com"}
 ]
 
 @app.route('/hannah')
 def get_hello_world():
     return '<div style="text-align:center"><h1>Hello World!</h1></div>'
 
-@app.route('/api/v1')
+@app.route('/api/v1', methods=['POST'])
+def add_employee():
+    new_employee = request.get_json()
+    employees.append(new_employee)
+    return jsonify(new_employee)
+
+@app.route('/api/v1', methods=['GET'])
 def get_employees():
     return jsonify(employees)
 
