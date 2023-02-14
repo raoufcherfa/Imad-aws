@@ -19,15 +19,14 @@ def add_employee():
     employees.append(new_employee)
     return jsonify(new_employee), 201
 
-@app.route('/api/v1/<int:id>', methods=['PUT'])
-def update_employee(id):
+@app.route('/api/v1/employees/<int:employee_id>', methods=['DELETE'])
+def delete_employee(employee_id):
     for employee in employees:
-        if employee['id'] == id:
-            employee['firstName'] = request.json['firstName']
-            employee['lastName'] = request.json['lastName']
-            employee['emailId'] = request.json['emailId']
-            return jsonify(employee)
-    return jsonify({'result': False, 'message': 'Employee not found'})
+        if employee['id'] == employee_id:
+            employees.remove(employee)
+            return jsonify({'message': 'Employee deleted successfully.'}), 200
+    return jsonify({'error': 'Employee not found.'}), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
