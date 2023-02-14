@@ -38,6 +38,14 @@ def add_employee():
     employees.append(new_employee)
     return jsonify(new_employee)
 
+@app.route('/api/v1/<int:id>', methods=['DELETE'])
+def delete_employee(id):
+    for employee in employees:
+        if employee['id'] == id:
+            employees.remove(employee)
+            return jsonify({'result': True})
+    return jsonify({'result': False, 'message': 'Employee not found'})
+
 @app.route('/api/v1', methods=['GET'])
 def get_employees():
     return jsonify(employees)
