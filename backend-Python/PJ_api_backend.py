@@ -13,5 +13,12 @@ def get_employees():
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
+@app.route('/api/v1/employees', methods=['POST'])
+
+def add_employee():
+    new_employee = request.json
+    new_employee['id'] = len(employees) + 1
+    employees.append(new_employee)
+    return jsonify(new_employee), 201
 
 
