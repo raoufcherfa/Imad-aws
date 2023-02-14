@@ -19,14 +19,15 @@ def add_employee():
     employees.append(new_employee)
     return jsonify(new_employee), 201
 
-@app.route('/employees/<int:id>', methods=['DELETE'])
-def delete_employee(id):
-    global employees
-    for i, employee in enumerate(employees):
+@app.route('/api/v1/<int:id>', methods=['PUT'])
+def update_employee(id):
+    for employee in employees:
         if employee['id'] == id:
-            del employees[i]
-            return 'Employé supprimé', 204
-    return 'Employé non trouvé', 404
+            employee['firstName'] = request.json['firstName']
+            employee['lastName'] = request.json['lastName']
+            employee['emailId'] = request.json['emailId']
+            return jsonify(employee)
+    return jsonify({'result': False, 'message': 'Employee not found'})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
