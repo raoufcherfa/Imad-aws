@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
-import uuid
+from flask_cors import CORS
+
 
 app = Flask(__name__)
-
+CORS(app)
 employees = [
         {'id': 1, 'firstName': 'John', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'},
         {'id': 2, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'},
@@ -14,6 +15,11 @@ employees = [
 def get_employees():
     return jsonify(employees)
 
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    data = {"name": "John", "age": 30, "city": "New York"}
+    return jsonify(data)
 
 @app.route('/api/v1/employees', methods=['POST'])
 def add_employee():
