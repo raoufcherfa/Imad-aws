@@ -1,59 +1,39 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-products = [
-    {
-        'id': 1,
-        'title': 'Product 1',
-        'description': 'This is the first product',
-        'price': 9.99,
-        'image': 'https://example.com/product1.jpg'
-    },
-    {
-        'id': 2,
-        'title': 'Product 2',
-        'description': 'This is the second product',
-        'price': 19.99,
-        'image': 'https://example.com/product2.jpg'
-    },
-    {
-        'id': 3,
-        'title': 'Product 3',
-        'description': 'This is the third product',
-        'price': 29.99,
-        'image': 'https://example.com/product3.jpg'
-    }
+employees = [
+    {'id': 1, 'firstName': 'John', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'},
+    {'id': 2, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'},
+    {'id': 3, 'firstName': 'Bob', 'lastName': 'Johnson', 'emailId': 'bobjohnson@example.com'}
 ]
 
-@app.route('/products', methods=['GET', 'POST'])
-def manage_products():
-    if request.method == 'GET':
-        return jsonify({'products': products})
+@app.route('/api/v1/employees', methods=['GET'])
+def get_employees():
+    return jsonify(employees)
 
-    if request.method == 'POST':
-        product = {
-            'id': products[-1]['id'] + 1,
-            'title': request.json['title'],
-            'description': request.json['description'],
-            'price': request.json['price'],
-            'image': request.json['image']
-        }
-        products.append(product)
-        return jsonify({'product': product}), 201
+@app.route('/api/v1/employees', methods=['POST'])
+def add_employee():
+    new_employee = request.json
+    new_employee['id'] = len(employees) + 1
+    employees.append(new_employee)
+    return jsonify(new_employee), 201
 
-@app.route('/product/<int:product_id>', methods=['GET', 'DELETE'])
-def manage_product(product_id):
-    product = [product for product in products if product['id'] == product_id]
-    if len(product) == 0:
-        return jsonify({'error': 'Product not found here'})
+@app.route('/api/v1/employees/<int:employee_id>', methods=['DELETE'])
+def delete_employee(employee_id):
+    for employee in employees:
+        if employee['id'] == employee_id:
+            employees.remove(employee)
+            return jsonify({'message': 'Employee has been deleted'}), 200
+    return jsonify({'error': 'Employee not found'}), 404
 
-    if request.method == 'GET':
-        return jsonify({'product': product[0]})
-
-    if request.method == 'DELETE':
-        products.remove(product[0])
-        return jsonify({'result': 'Product deleted'})
+@app.route('/api/v1/employees/<int:employee_id>', methods=['PUT'])
+def update_employee(employee_id):
+    for employee in employees:
+        if employee['id'] == employee_id:
+            employee.update(request.json)
+            return jsonify(employee), 200
+    return jsonify({'error': 'Employee not found'}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
