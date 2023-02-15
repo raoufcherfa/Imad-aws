@@ -87,11 +87,11 @@ employees = [
 def get_hello_world():
     return '<div style="text-align:center"><h1>Hello World!</h1></div>'
 
-@app.route('/api/v1/employees/', methods=['GET'])
+@app.route('/api/v1/employees', methods=['GET'])
 def get_employees():
     return jsonify(employees)
 
-@app.route('/api/v1/employees/', methods=['POST'])
+@app.route('/api/v1/employees', methods=['POST'])
 def add_employee():
     new_employee = request.get_json()
     new_employee['id'] = len(employees) + 1
