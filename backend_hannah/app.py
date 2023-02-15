@@ -85,13 +85,13 @@ employees = [
 def get_hello_world():
     return '<div style="text-align:center"><h1>Hello World!</h1></div>'
 
-@app.route('/api/v1', methods=['POST'])
+@app.route('/api/v1/employees/', methods=['POST'])
 def add_employee():
     new_employee = request.get_json()
     employees.append(new_employee)
     return jsonify(new_employee)
 
-@app.route('/api/v1/<int:id>', methods=['DELETE'])
+@app.route('/api/v1/employees/<int:id>', methods=['DELETE'])
 def delete_employee(id):
     for employee in employees:
         if employee['id'] == id:
@@ -99,7 +99,7 @@ def delete_employee(id):
             return jsonify({'result': True})
     return jsonify({'result': False, 'message': 'Employée non trouvé'})
 
-@app.route('/api/v1/<int:id>', methods=['PUT'])
+@app.route('/api/v1/employees/<int:id>', methods=['PUT'])
 def update_employee(id):
     for employee in employees:
         if employee['id'] == id:
@@ -109,7 +109,7 @@ def update_employee(id):
             return jsonify(employee)
     return jsonify({'result': False, 'message': 'Employee non trouvé'})
 
-@app.route('/api/v1', methods=['GET'])
+@app.route('/api/v1/employees/', methods=['GET'])
 def get_employees():
     return jsonify(employees)
 
