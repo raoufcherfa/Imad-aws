@@ -94,6 +94,7 @@ def get_employees():
 @app.route('/api/v1/employees/', methods=['POST'])
 def add_employee():
     new_employee = request.get_json()
+    new_employee['id'] = len(employees) + 1
     employees.append(new_employee)
     return jsonify(new_employee)
 
