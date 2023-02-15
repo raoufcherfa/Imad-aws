@@ -87,6 +87,10 @@ employees = [
 def get_hello_world():
     return '<div style="text-align:center"><h1>Hello World!</h1></div>'
 
+@app.route('/api/v1/employees/', methods=['GET'])
+def get_employees():
+    return jsonify(employees)
+
 @app.route('/api/v1/employees/', methods=['POST'])
 def add_employee():
     new_employee = request.get_json()
@@ -111,9 +115,6 @@ def update_employee(id):
             return jsonify(employee)
     return jsonify({'result': False, 'message': 'Employee non trouvé'})
 
-@app.route('/api/v1/employees/', methods=['GET'])
-def get_employees():
-    return jsonify(employees)
 
 if __name__ == '__main__':
     app.run(debug=True)
