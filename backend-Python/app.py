@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 employees = [
     {'id': 1, 'firstName': 'John', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'},
@@ -36,4 +38,4 @@ def update_employee(employee_id):
     return jsonify({'error': 'Employee not found'}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(debug=True,)
