@@ -46,7 +46,7 @@ class TestAPI(unittest.TestCase):
         with app.test_client() as client:
             response = client.delete(f'/api/v1/employees/{employee_id}')
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.json['message'], 'Employee deleted successfully.')
+            self.assertEqual(response.json['message'], 'Employee has been deleted')
             self.assertIsNone(next((employee for employee in employees if employee['id'] == employee_id), None))
 
 if __name__ == '__main__':
