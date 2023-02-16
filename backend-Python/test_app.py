@@ -21,20 +21,23 @@ class TestApp(unittest.TestCase):
         new_employee = {'firstName': 'Alice', 'lastName': 'Smith', 'emailId': 'alicesmith@example.com'}
         response = self.client.post('/api/v1/employees', json=new_employee)
         self.assertEqual(response.status_code, 201)
-        self.assertIn(new_employee, self.employees)
+        employee = json.loads(response.data)
+        self.assertIn(employee, app.employees)
 
     def test_delete_employee(self):
         employee_id = 2
         response = self.client.delete(f'/api/v1/employees/{employee_id}')
         self.assertEqual(response.status_code, 200)
-        self.assertNotIn({'id': employee_id, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'}, self.employees)
+        self.assertNotIn({'id': employee_id, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'}, app.employees)
 
     def test_update_employee(self):
         employee_id = 1
         updated_employee = {'firstName': 'Johnny', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'}
         response = self.client.put(f'/api/v1/employees/{employee_id}', json=updated_employee)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), {'id': employee_id, 'firstName': 'Johnny', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'})
+        employee = json.loads(response.data)
+        self.assertEqual(employee, {'id': employee_id, 'firstName': 'Johnny', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'})
+        self.assertIn(employee, app.employees)
 
 if __name__ == '__main__':
     unittest.main()
