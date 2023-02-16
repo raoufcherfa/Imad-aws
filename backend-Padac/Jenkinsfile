@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Deploy to Dev') {
             steps {
-                sh 'echo "http://localhost:5000"'
+                sh 'echo "http://localhost:5000s"'
             }
         }
     }
