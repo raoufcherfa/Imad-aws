@@ -1,46 +1,53 @@
-import unittest
 import json
-from PJ_api_backend import app
+import unittest
+from PJ_api_backend import app, employees
 
-class TestApp(unittest.TestCase):
-    def setUp(self):
-        self.client = app.test_client()
-        self.employees = [
-            {'id': 1, 'firstName': 'John', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'},
-            {'id': 2, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'},
-            {'id': 3, 'firstName': 'Bob', 'lastName': 'Johnson', 'emailId': 'bobjohnson@example.com'}
-        ]
 
+class TestAPI(unittest.TestCase):
+    # Test GET /api/v1/employees
     def test_get_employees(self):
-        response = self.client.get('/api/v1/employees')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(sorted(json.loads(response.data)), sorted(self.employees))
+        with app.test_client() as client:
+            response = client.get('/api/v1/employees')
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(len(response.json), len(employees))
 
+    # Test POST /api/v1/employees
     def test_add_employee(self):
-        new_employee = {'firstName': 'Alice', 'lastName': 'Smith', 'emailId': 'alicesmith@example.com'}
-        response = self.client.post('/api/v1/employees', json=new_employee)
-        self.assertEqual(response.status_code, 201)
-        employee = json.loads(response.data)
-        self.assertIn(employee, self.employees)
-        self.employees.append(employee)
+        new_employee = {
+            "firstName": "PJ",
+            "lastName": "DACOSTA",
+            "emailId": "PJ.DACOSTA@gmail.com"
+        }
+        with app.test_client() as client:
+            response = client.post('/api/v1/employees', json=new_employee)
+            self.assertEqual(response.status_code, 201)
+            self.assertEqual(response.json['firstName'], new_employee['firstName'])
+            self.assertEqual(response.json['lastName'], new_employee['lastName'])
+            self.assertEqual(response.json['emailId'], new_employee['emailId'])
 
-    def test_delete_employee(self):
-        employee_id = 2
-        response = self.client.delete(f'/api/v1/employees/{employee_id}')
-        self.assertEqual(response.status_code, 200)
-        self.assertNotIn({'id': employee_id, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'}, self.employees)
-        self.employees = [e for e in self.employees if e['id'] != employee_id]
-
+    # Test PUT /api/v1/employees/:employee_id
     def test_update_employee(self):
         employee_id = 1
-        updated_employee = {'firstName': 'Johnny', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'}
-        response = self.client.put(f'/api/v1/employees/{employee_id}', json=updated_employee)
-        self.assertEqual(response.status_code, 200)
-        employee = json.loads(response.data)
-        self.assertEqual(employee, {'id': employee_id, 'firstName': 'Johnny', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'})
-        for e in self.employees:
-            if e['id'] == employee_id:
-                e.update(updated_employee)
+        updated_employee = {
+            "firstName": "Mathieu",
+            "lastName": "Perotti",
+            "emailId": "Mathieu.Perotti@icloud.com"
+        }
+        with app.test_client() as client:
+            response = client.put(f'/api/v1/employees/{employee_id}', json=updated_employee)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json['firstName'], updated_employee['firstName'])
+            self.assertEqual(response.json['lastName'], updated_employee['lastName'])
+            self.assertEqual(response.json['emailId'], updated_employee['emailId'])
+
+    # Test DELETE /api/v1/employees/:employee_id
+    def test_delete_employee(self):
+        employee_id = 2
+        with app.test_client() as client:
+            response = client.delete(f'/api/v1/employees/{employee_id}')
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json['message'], 'Employee deleted successfully.')
+            self.assertIsNone(next((employee for employee in employees if employee['id'] == employee_id), None))
 
 if __name__ == '__main__':
     unittest.main()
