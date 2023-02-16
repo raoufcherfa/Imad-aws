@@ -1,6 +1,6 @@
 import unittest
 import json
-from app import app
+from PJ_api_backend import app
 
 class TestApp(unittest.TestCase):
 
