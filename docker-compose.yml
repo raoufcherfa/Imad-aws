@@ -1,6 +1,8 @@
 version: '2.1'
 services:
   frontend:
+    image: frontend_hannah
+    container_name: frontend_hannah
     build:
       context: ./angular
       dockerfile: Dockerfile
@@ -8,6 +10,8 @@ services:
       - "4200:4200"
       - "80:80"
   backend:
+    image: backend_hannah
+    container_name: backend_hannah
     build:
       context: ./backend_hannah
       dockerfile: Dockerfile
