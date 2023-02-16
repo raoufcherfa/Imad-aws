@@ -1,6 +1,6 @@
 import unittest
 import json
-from app import app
+from mp import app
 
 class TestApp(unittest.TestCase):
 
