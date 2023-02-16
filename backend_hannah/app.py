@@ -99,8 +99,8 @@ def delete_employee(id):
     for employee in employees:
         if employee['id'] == id:
             employees.remove(employee)
-            return jsonify({'result': True})
-    return jsonify({'result': False, 'message': 'Employée non trouvé'})
+            return jsonify({'message': 'Employée supprimé.'}), 200
+    return jsonify({'message': 'Employée non trouvé'})
 
 @app.route('/api/v1/employees/<int:id>', methods=['PUT'])
 def update_employee(id):
@@ -110,7 +110,7 @@ def update_employee(id):
             employee['lastName'] = request.json['lastName']
             employee['emailId'] = request.json['emailId']
             return jsonify(employee)
-    return jsonify({'result': False, 'message': 'Employee non trouvé'})
+    return jsonify({'message': 'Employee non trouvé'})
 
 if __name__ == '__main__':
     app.run(debug=True)
