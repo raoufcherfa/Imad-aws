@@ -1,10 +1,15 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, jenkins
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-
+employees = [
+        {'id': 1, 'firstName': 'John', 'lastName': 'Doe', 'emailId': 'johndoe@example.com'},
+        {'id': 2, 'firstName': 'Jane', 'lastName': 'Smith', 'emailId': 'janesmith@example.com'},
+        {'id': 3, 'firstName': 'Bob', 'lastName': 'Johnson', 'emailId': 'bobjohnson@example.com'},
+        {'id': 4, 'firstName': 'raouf', 'lastName': 'pa', 'emailId': 'raoufpa@example.com'}
+    ]
 
 @app.route('/api/v1/employees', methods=['GET'])
 def get_employees():
