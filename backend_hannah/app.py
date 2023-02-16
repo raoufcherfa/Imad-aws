@@ -83,10 +83,6 @@ employees = [
         "emailId": "alice.dubois@gmail.com"}
 ]
 
-@app.route('/hannah')
-def get_hello_world():
-    return '<div style="text-align:center"><h1>Hello World!</h1></div>'
-
 @app.route('/api/v1/employees', methods=['GET'])
 def get_employees():
     return jsonify(employees)
@@ -115,7 +111,6 @@ def update_employee(id):
             employee['emailId'] = request.json['emailId']
             return jsonify(employee)
     return jsonify({'result': False, 'message': 'Employee non trouvé'})
-
 
 if __name__ == '__main__':
     app.run(debug=True)
