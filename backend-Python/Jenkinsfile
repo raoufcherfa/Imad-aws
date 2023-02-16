@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        FLASK_APP = "app.py"
+        FLASK_APP = "mp.py"
         FLASK_ENV = "development"
     }
     stages {
@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Run API') {
             steps {
-                sh 'python app.py &'
+                sh 'python mp.py &'
             }
         }
         stage('Merge to Dev') {
