@@ -1,58 +1,56 @@
-name: CI/CD Pipeline
+name: Padac
 
-on:
-  push:
-    branches: [master]
+on: [push]
 
 jobs:
-  checkout:
+  build_test:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
 
-  build:
-    needs: checkout
-    runs-on: ubuntu-latest
     steps:
-      - name: Set Environment Variables
-        run: |
-          echo "FLASK_APP=app.py" >> $GITHUB_ENV
-          echo "FLASK_ENV=development" >> $GITHUB_ENV
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
+    - uses: actions/checkout@v3
+      with:
+        ref: 'master'
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install pytest
-      - name: Run Tests
-        run: pytest unit_tests.py
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
 
+    - name: Install Python dependencies
+      run: |
+        pwd && ls
+        python -m pip install --upgrade pip
+        cd backend && pip install -r requirements.txt
+    
+    - name: Set up MongoDB
+      run: sudo docker run -e MONGO_INITDB_ROOT_USERNAME='root' -e MONGO_INITDB_ROOT_PASSWORD='example' -e MONGO_INITDB_DATABASE='backend' -d -p 27017:27017 mongo:latest
+  
+    - name: Run the API and tests
+      uses: BerniWittmann/background-server-action@v1
+      with:
+        cwd: backend
+        command: python uni_test.py
+        start: flask run --host=0.0.0.0 --port=8080
+        wait-on: 'http://localhost:8080/api/v1/employees'
+      env:
+        FLASK_ENV: development
 
-  run-api:
-    needs: build
+  push_to_dev:
+    needs: build_test
     runs-on: ubuntu-latest
-    steps:
-      - name: Start API
-        run: python app.py &
 
-  merge-to-dev:
-    needs: run-api
-    runs-on: ubuntu-latest
     steps:
-      - name: Merge to Dev Branch
-        run: |
-          git checkout dev
-          git merge origin/master
-  deploy-to-dev:
-    needs: merge-to-dev
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Dev Environment
-        run: echo "http://localhost:5000"
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: 'master'
+      
+      - name: Push to dev
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: dev # Branche du merge
+          FOLDER: backend # répertoire pour le back 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          MESSAGE: "Build: ({sha}) {msg} passed the tests with success" 
+        
