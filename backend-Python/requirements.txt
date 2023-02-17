@@ -1,8 +1,4 @@
 flask
 flask-cors
 python
-<<<<<<< HEAD
 unitest
-=======
-unittest
->>>>>>> bb24e96a4098943d436dce691bbb6cb22ce8d292
