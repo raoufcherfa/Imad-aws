@@ -9,12 +9,6 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: 'master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/padac78/padac-aws.git']]])
             }
-            stages {
-    stage('Install') {
-        steps {
-            sh 'pip install --upgrade pip'
-        }
-        }
         }
         stage('Build') {
             steps {
