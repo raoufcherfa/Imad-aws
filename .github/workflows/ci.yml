@@ -20,7 +20,7 @@ jobs:
       run: |
         pwd && ls
         python -m pip install --upgrade pip
-        cd backend && pip install -r requirements.txt
+        pip install -r requirements.txt
     
     - name: Set up MongoDB
       run: sudo docker run -e MONGO_INITDB_ROOT_USERNAME='root' -e MONGO_INITDB_ROOT_PASSWORD='example' -e MONGO_INITDB_DATABASE='backend' -d -p 27017:27017 mongo:latest
