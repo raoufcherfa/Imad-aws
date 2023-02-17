@@ -2,5 +2,3 @@ flask
 flask_cors
 unitest
 pytest
-python 
-pip
