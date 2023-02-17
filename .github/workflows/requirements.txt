@@ -1,6 +1,0 @@
-flask
-flask_cors
-unitest
-pytest
-pip 
-python
