@@ -49,7 +49,7 @@ jobs:
         env:
           REPO: self
           BRANCH: Dev # Branche du merge
-          FOLDER: backend # répertoire pour le back 
+          FOLDER: backend-Padac # répertoire pour le back 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           MESSAGE: "Build: ({sha}) {msg} passed the tests with success" 
         
