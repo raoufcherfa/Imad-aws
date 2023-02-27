@@ -1,0 +1,19 @@
+version: "2.1"
+services:
+  frontend:
+    image: frontend-angular
+    container_name: frontend-angular
+    build:
+      context: ./angular
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+      - "81:80"
+  backend:
+    image: backend_angular
+    container_name: backend-Padac
+    build:
+      context: ./backend-Padac
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
