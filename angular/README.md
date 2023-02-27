@@ -25,3 +25,15 @@ Cet endpoint permet de supprimer un employé en spécifiant son `id`.
 
 ### PUT /employees/id
 Cet endpoint permet de mettre à jour les informations d'un employé en spécifiant son `id` et en envoyant les nouvelles données dans le corps de la requête.
+## Json Format
+{
+
+"id": 1,
+
+"firstName": "Karim",
+
+"lastName": "Benzema",
+
+"emailId": "Benzema@gmail.com"
+
+}
