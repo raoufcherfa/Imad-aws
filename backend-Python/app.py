@@ -3,27 +3,6 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 products = [
-    {
-        'id': 1,
-        'title': 'Product 1',
-        'description': 'This is the first product',
-        'price': 9.99,
-        'image': 'https://example.com/product1.jpg'
-    },
-    {
-        'id': 2,
-        'title': 'Product 2',
-        'description': 'This is the second product',
-        'price': 19.99,
-        'image': 'https://example.com/product2.jpg'
-    },
-    {
-        'id': 3,
-        'title': 'Product 3',
-        'description': 'This is the third product',
-        'price': 29.99,
-        'image': 'https://example.com/product3.jpg'
-    }
 ]
 
 @app.route('/products', methods=['GET', 'POST'])
