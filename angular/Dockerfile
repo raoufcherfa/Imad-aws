@@ -1,5 +1,5 @@
 # Use Node.js as the base image for the build stage
-FROM node:14 AS build
+FROM node:14-slim AS build
 
 # Set the working directory in the container
 WORKDIR /app
